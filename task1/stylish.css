@@ -1,7 +1,11 @@
-table {
-	border-collapse: collapse; 
+.field {
+  display: grid;
+  width: fit-content;
 }
-td {
-	border: 2px solid black;
-	padding: 10px 10px;
+
+.block {
+  width: 20px;
+  height: 20px;
+  background-color: ivory;
+  border: 1px solid black;
 }

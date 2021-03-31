@@ -2,11 +2,11 @@ let st;
 let fin;
 let fy, fx;
 let cells;
-let b;
 let openList = [];
-let closedList = [];
 let closedindList = [];
 let n; 
+let INF = 9007199254740990;
+let b;
 
 class Node { 
   constructor(num, parent, cost) {
@@ -70,8 +70,7 @@ function WallPoints() {
   for (let i = 0; i < cells.length; i++) {
     cells[i].onclick = function(e) {
         cells[i].style["background-color"] = '#2E3236'; 
-        let poin = new Node (i, null, null);
-        closedList.push(poin);
+        closedindList.push(i);
     }
   }
 }
@@ -87,16 +86,38 @@ function WhatToDo() {
   }
 }
 
-function removeField() {
+function removeField(bit) {
   if (b == true) {
-    //let field = document.getElementById('FMap');
+    let elems = document.getElementsByClassName("block");
+    while (elems.length) {elems[0].remove()}
+    openList = [];
+    closedindList = [];
+    if (bit == true){
+    st = undefined;
+    fin = undefined; 
+    }
     CreateField();
   } else {
     CreateField();
   }
 }
 
+function clearField() {
+  removeField(false);
+  cells[fin].style["background-color"] = '#6d67bf';
+  cells[st].style["background-color"] = '#73B4FF';
+}
+
 //Оформление заканчивается тут
+
+function findIndinOP (ind) {
+  for (let i = 0; i < openList.length; i++) {
+    if (ind == openList[i].num) {
+      return i;
+    }
+  }
+  return false;
+}
 
 function manhetten(x1, y1) {
   let dx = Math.abs(x1 - fx);
@@ -111,67 +132,186 @@ function XY(ind) {
   return yes;
 }
 
-function neighbors (ind) { //Ищем соседей и кидаем их в openList
+function ColorPath (win) {
+  while (win.parent != null) {
+    cells[win.num].style["background-color"] = "#fce4d4";
+    win = win.parent;
+  }
+}
+
+function neighbors (poin) { //Ищем соседей и кидаем их в openList
   let weight;
+  let point;
+  let help;
+  let ind = poin.num;
 
   if ((ind+1)%n != 0) { //правый сосед (да)
-    if (closedindList.includes(ind+1) == false) {
-      cells[ind+1].style["background-color"] = '#A4FF91';
+    if (closedindList.includes(ind+1) == false ) {
+        cells[ind+1].style["background-color"] = '#C2FFD6'; 
       weight = XY(ind+1) + 10;
-      cells[ind+1].style["background-color"] = '#C2FFD6';
+      help = findIndinOP(ind+1);
+      if (help == false) {
+        point = new Node (ind+1, poin, weight); 
+        openList.push(point);
+      } else {
+        if (openList[help].cost > weight) {
+          openList[help].parent = poin;
+          openList[help].cost = weight;
+        }
+      }
     }
   }
     if ((ind+1+n)%n != 0 && ind+n < n*n) { //нижний правый сосед (да)
       if (closedindList.includes(ind+1+n) == false) {
-        cells[ind+1+n].style["background-color"] = '#C2FFD6';
-        weight = 14;
+          cells[ind+1+n].style["background-color"] = '#C2FFD6'; 
+        weight = XY(ind+1+n) + 14;
+        help = findIndinOP(ind+1+n);
+        if (help == false) {
+          point = new Node (ind+1+n, poin, weight); 
+          openList.push(point);
+        } else {
+          if (openList[help].cost > weight) {
+            openList[help].parent = poin;
+            openList[help].cost = weight;
+          }
+        }
       }
   }
   if ((ind+1-n)%n != 0 && ind-n+1 > 0) { //верхний правый сосед (да)
     if (closedindList.includes(ind+1-n) == false) {
       cells[ind+1-n].style["background-color"] = '#C2FFD6'; 
-      weight = 14;
+      weight = XY(ind+1-n) + 14;
+      help = findIndinOP(ind+1-n);
+      if (help == false) {
+        point = new Node (ind+1-n, poin, weight); 
+        openList.push(point);
+      } else {
+        if (openList[help].cost > weight) {
+          openList[help].parent = poin;
+          openList[help].cost = weight;
+        }
+      }
     }
   }
   if (ind-n >= 0) { //верхний сосед (да)
     if (closedindList.includes(ind-n) == false) {
-      cells[ind-n].style["background-color"] = '#C2FFD6';
-      weight = 10;
+        cells[ind-n].style["background-color"] = '#C2FFD6'; 
+      weight = XY(ind-n) + 10; 
+      help = findIndinOP(ind-n);
+      if (help == false) {
+        point = new Node (ind-n, poin, weight); 
+        openList.push(point);
+      } else {
+        if (openList[help].cost > weight) {
+          openList[help].parent = poin;
+          openList[help].cost = weight;
+        }
+      }
     }
   }
   if (ind+n < n*n) { //нижний сосед (да)
     if (closedindList.includes(ind+n) == false) {
-      cells[ind+n].style["background-color"] = '#C2FFD6';
-      weight = 10;
+        cells[ind+n].style["background-color"] = '#C2FFD6'; 
+      weight = XY(ind+n) + 10;
+      help = findIndinOP(ind+n);
+      if (help == false) {
+        point = new Node (ind+n, poin, weight); 
+        openList.push(point);
+      } else {
+        if (openList[help].cost > weight) {
+          openList[help].parent = poin;
+          openList[help].cost = weight;
+        }
+      }
     }
   }
   if ((ind)%n != 0 && ind-1 >= 0) { //левый сосед (да)
     if (closedindList.includes(ind-1) == false) {
-      cells[ind-1].style["background-color"] = '#C2FFD6';
-      weight = 10;
+        cells[ind-1].style["background-color"] = '#C2FFD6'; 
+      weight = XY(ind-1) + 10;
+      help = findIndinOP(ind-1);
+      if (help == false) {
+        point = new Node (ind-1, poin, weight); 
+        openList.push(point);
+      } else {
+        if (openList[help].cost > weight) {
+          openList[help].parent = poin;
+          openList[help].cost = weight;
+        }
+      }
     }
   }
   if ((ind)%n != 0 && ind-1-n >= 0) { //левый верхний сосед (да)
     if (closedindList.includes(ind-1-n) == false) {
-      cells[ind-1-n].style["background-color"] = '#C2FFD6';
-      weight = 14;
+      cells[ind-1-n].style["background-color"] = '#C2FFD6'; 
+      weight = XY(ind-1-n) + 14;
+      help = findIndinOP(ind-1-n);
+      if (help == false) {
+        point = new Node (ind-1-n, poin, weight); 
+        openList.push(point);
+      } else {
+        if (openList[help].cost > weight) {
+          openList[help].parent = poin;
+          openList[help].cost = weight;
+        }
+      }
     }
   }
   if ((ind)%n != 0 && ind-1+n < n*n) { //левый нижний сосед (да)
     if (closedindList.includes(ind+n-1) == false) {
-    cells[ind-1+n].style["background-color"] = '#C2FFD6';
-    weight = 14;
+        cells[ind-1+n].style["background-color"] = '#C2FFD6'; 
+    weight = XY(ind+n-1) + 14;
+    help = findIndinOP(ind-1+n);
+    if (help == false) {
+      point = new Node (ind-1+n, poin, weight); 
+      openList.push(point);
+    } else {
+      if (openList[help].cost > weight) {
+        openList[help].parent = poin;
+        openList[help].cost = weight;
+      }
+    }
    }
   }
 }
 
+function finding () {
+  let lowC = INF; //Для поиск наименшей стоимости в openList
+  let rar;
+    for(let i = 0; i < openList.length; i++) {
+      if (openList[i].cost < lowC) {
+          lowC = openList[i].cost;
+          rar = i;
+      } 
+  }
+  return rar;
+}
+
 function adding() {
-  let index;
+  let created = false;
+  let index = st;
+  let current;
   let s = new Node (st, null, 0);
   openList.push(s);
-  neighbors(st);
+  neighbors(s, st);
   closedindList.push(st);
-  closedList.push(s);
+  openList.splice(openList.indexOf(s), 1);
+   while (openList.length > 0) {
+     index = finding ();
+     current = openList[index];
+     if (current.num != fin) {
+      openList.splice(index, 1);
+      closedindList.push(current.num);
+      neighbors(current);
+     } else {
+       ColorPath(current);
+       created = true;
+       break;
+     } 
+  } 
+  if (created == false) {
+    alert ("Ох, какая жалость! Пути нет!");
+  }
 }
 
 function StartPath() {
@@ -181,5 +321,6 @@ function StartPath() {
     fy = parseInt(fin/n);
     fx = fin - (fy*n);
     adding ();
+    cells[fin].style["background-color"] = '#6d67bf';
   }
 }

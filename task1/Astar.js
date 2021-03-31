@@ -122,7 +122,10 @@ function findIndinOP (ind) {
 function manhetten(x1, y1) {
   let dx = Math.abs(x1 - fx);
   let dy = Math.abs(y1 - fy);
-  return dx + dy;
+  if (dx > dy) {
+    return ((14 * dy) + (10 * (dx - dy)))
+  }
+    return (14 * dx + (10 * (dy - dx)));
 }
 
 function XY(ind) {

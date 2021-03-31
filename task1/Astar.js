@@ -151,7 +151,7 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   if ((ind+1)%n != 0) { //правый сосед (да)
     if (closedindList.includes(ind+1) == false ) {
         cells[ind+1].style["background-color"] = '#C2FFD6'; 
-      weight = XY(ind+1) + 10;
+      weight = XY(ind+1);
       help = findIndinOP(ind+1);
       if (help == false) {
         point = new Node (ind+1, poin, weight); 
@@ -167,7 +167,7 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
     if ((ind+1+n)%n != 0 && ind+n < n*n) { //нижний правый сосед (да)
       if (closedindList.includes(ind+1+n) == false) {
           cells[ind+1+n].style["background-color"] = '#C2FFD6'; 
-        weight = XY(ind+1+n) + 14;
+        weight = XY(ind+1+n);
         help = findIndinOP(ind+1+n);
         if (help == false) {
           point = new Node (ind+1+n, poin, weight); 
@@ -183,7 +183,7 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   if ((ind+1-n)%n != 0 && ind-n+1 > 0) { //верхний правый сосед (да)
     if (closedindList.includes(ind+1-n) == false) {
       cells[ind+1-n].style["background-color"] = '#C2FFD6'; 
-      weight = XY(ind+1-n) + 14;
+      weight = XY(ind+1-n);
       help = findIndinOP(ind+1-n);
       if (help == false) {
         point = new Node (ind+1-n, poin, weight); 
@@ -199,7 +199,7 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   if (ind-n >= 0) { //верхний сосед (да)
     if (closedindList.includes(ind-n) == false) {
         cells[ind-n].style["background-color"] = '#C2FFD6'; 
-      weight = XY(ind-n) + 10; 
+      weight = XY(ind-n); 
       help = findIndinOP(ind-n);
       if (help == false) {
         point = new Node (ind-n, poin, weight); 
@@ -215,7 +215,7 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   if (ind+n < n*n) { //нижний сосед (да)
     if (closedindList.includes(ind+n) == false) {
         cells[ind+n].style["background-color"] = '#C2FFD6'; 
-      weight = XY(ind+n) + 10;
+      weight = XY(ind+n);
       help = findIndinOP(ind+n);
       if (help == false) {
         point = new Node (ind+n, poin, weight); 
@@ -231,7 +231,7 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   if ((ind)%n != 0 && ind-1 >= 0) { //левый сосед (да)
     if (closedindList.includes(ind-1) == false) {
         cells[ind-1].style["background-color"] = '#C2FFD6'; 
-      weight = XY(ind-1) + 10;
+      weight = XY(ind-1);
       help = findIndinOP(ind-1);
       if (help == false) {
         point = new Node (ind-1, poin, weight); 
@@ -247,7 +247,7 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   if ((ind)%n != 0 && ind-1-n >= 0) { //левый верхний сосед (да)
     if (closedindList.includes(ind-1-n) == false) {
       cells[ind-1-n].style["background-color"] = '#C2FFD6'; 
-      weight = XY(ind-1-n) + 14;
+      weight = XY(ind-1-n);
       help = findIndinOP(ind-1-n);
       if (help == false) {
         point = new Node (ind-1-n, poin, weight); 
@@ -263,7 +263,7 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   if ((ind)%n != 0 && ind-1+n < n*n) { //левый нижний сосед (да)
     if (closedindList.includes(ind+n-1) == false) {
         cells[ind-1+n].style["background-color"] = '#C2FFD6'; 
-    weight = XY(ind+n-1) + 14;
+    weight = XY(ind+n-1);
     help = findIndinOP(ind-1+n);
     if (help == false) {
       point = new Node (ind-1+n, poin, weight); 

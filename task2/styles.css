@@ -1,13 +1,4 @@
-.workspace {
-    border: 3px solid black;
-    width: 600px;
-    height: 600px;
-    margin: 0 auto;
-    /* padding: 10px; */
-}
-
 .point {
-    /* position: absolute; */
     width: 10px;
     height: 10px;
     background-color: black;

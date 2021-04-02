@@ -2,7 +2,9 @@ window.addEventListener("DOMContentLoaded", function()
 {
     let allPoints = []; // объекты. координаты (x, y), id, кластер (cluster)
     let allClusters = []; // объекты. координаты (x, y), id, цвет (color), массив точек (points)
-    let board = document.querySelector("div.workspace");
+    const board = document.querySelector("canvas");
+    const context = board.getContext("2d");
+   
 
     function clusterCount() {
         if (document.getElementById('vvod').value) {
@@ -67,7 +69,7 @@ window.addEventListener("DOMContentLoaded", function()
 
     }
 
-    
+   
     board.addEventListener("click", function(e) {
         let p = document.createElement("div");
         let pointId = "point" + allPoints.length;

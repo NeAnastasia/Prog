@@ -62,6 +62,9 @@ function FinalPoint() {
         cells[i].style["background-color"] = '#6d67bf';
         fin = i;
       }
+      if (closedindList.includes(fin) == true) {
+        closedindList.splice(closedindList.indexOf(fin), 1);
+      }
     }
   }
 }
@@ -69,8 +72,19 @@ function FinalPoint() {
 function WallPoints() {
   for (let i = 0; i < cells.length; i++) {
     cells[i].onclick = function(e) {
+      if (closedindList.includes(i) == true) {
+        cells[i].style["background-color"] = '#F6FFFE';
+        closedindList.splice(closedindList.indexOf(i), 1);
+      } else {
+        if  (st == i) {
+          st  = undefined;
+        }
+        if (fin == i) {
+          fin = undefined;
+        }
         cells[i].style["background-color"] = '#2E3236'; 
         closedindList.push(i);
+      }
     }
   }
 }

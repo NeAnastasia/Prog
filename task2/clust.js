@@ -130,7 +130,7 @@ window.addEventListener("DOMContentLoaded", function()
                 let oldX = cluster.x;
                 let oldY = cluster.y;
                 newClusterPlace(cluster);
-                if (oldX != cluster.x && oldY != cluster.y) {
+                if (Math.floor(oldX) != Math.floor(cluster.x) && Math.floor(oldY) != Math.floor(cluster.y)) {
                     flag = false;
                 }
             });

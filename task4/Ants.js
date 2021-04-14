@@ -2,18 +2,13 @@ let allPoints = []; // объекты. координаты (x, y)
 let antmatr;
 let n;
 let Q = 20;
-
-class PhVer {
-    constructor(pher, dist) { 
-        this.dist = dist;
-        this.pher = pher;
-    }
-}
+let canvas;
+let contex;
 
 window.addEventListener("DOMContentLoaded", function() 
 {
-    const canvas = document.querySelector("canvas");
-    const context = canvas.getContext("2d");
+    canvas = document.querySelector("canvas");
+    context = canvas.getContext("2d");
 
     canvas.width = 1400;
     canvas.height = 500;
@@ -33,30 +28,35 @@ window.addEventListener("DOMContentLoaded", function()
             x: x,
             y: y
         });
-
-        console.log(allPoints);
+        context.closePath();
     })
 })
 
 function redrawP () {
+    
     for (let j = 0; j < n; j++) {
+        context.beginPath();
         context.arc(allPoints[j].x, allPoints[j].y, 8, 0, Math.PI * 2);
         context.fillStyle = "#4C0D6E";
         context.fill();
-        context.stroke();
+        context.stroke(); 
+        context.closePath();
     }
+   
+}
+
+function clearcanv () {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    redrawP();
 }
 
 function createline (ind1, ind2) {  //для отрисовки пути
-    const canvas = document.getElementById("canvas");
-    const context = canvas.getContext("2d");
-    setTimeout(function() {
-        ctx.beginPath();
-        ctx.strokeStyle = '#331950';
-        ctx.moveTo(allPoints[ind1].x, allPoints[ind1].y);
-        ctx.lineTo(allPoints[ind2].x, allPoints[ind2].y);
-        ctx.stroke();
-      }, 1000);
+        context.beginPath();
+        context.strokeStyle = '#331950';
+        context.moveTo(allPoints[ind1].x, allPoints[ind1].y);
+        context.lineTo(allPoints[ind2].x, allPoints[ind2].y);
+        context.stroke();
+        context.closePath();
 }
 
 function line (xa, xb, ya, yb) {
@@ -67,25 +67,32 @@ function line (xa, xb, ya, yb) {
 
 function disFinder (start) {
     for (let h = 0; h < n; h++) {
-        if (h != start && antmatr[start][h].dist == undefined) {
-            antmatr[start][h].dist = line(allPoints[start].x, allPoints[h].x, allPoints[start].y, allPoints[h].y);
-            antmatr[h][start].dist = antmatr[start][h].dist;
+        if (h != start && antmatrdist[start][h] == undefined) {
+            antmatrdist[start][h] = line(allPoints[start].x, allPoints[h].x, allPoints[start].y, allPoints[h].y);
+            antmatrdist[h][start] = antmatrdist[start][h];
         }
     }
 }
 
 function ant() {
+    let iter = 0;
+
      n = allPoints.length;
-     antmatr = new Array(n);
+     antmatrpher = new Array(n);
      for (let i = 0; i < n; i++) {
-        antmatr[i] = new Array(n);
+        antmatrpher[i] = new Array(n);
     }
 
+    antmatrdist = new Array(n);
+    for (let i = 0; i < n; i++) {
+        antmatrdist[i] = new Array(n);
+    }
+    
     let paths = new Array(n);
      for (let i = 0; i < n; i++) {
         paths[i] = new Array(n);
     }
-    console.log("ало");
+    
     let allwish;
     let city;
     let probab = [];
@@ -95,52 +102,64 @@ function ant() {
    
     for(let i = 0; i < n; i++) {
         for(let j = 0; j < n; j++) {
-            let s = new PhVer (undefined, 0.200);
-            antmatr.push(s);
-            paths[i][j] = null;
+            antmatrpher[i][j] = 0.2;
         }
     }
-    //более глобальный цикл
+    while (iter < 1000) {
     for(let i = 0; i < n; i++) { //основной цикл для 1 прохода по вершинам (начинаем с 1 вершины, остальные муравьи пойдут со 2 и т.д.)
         city = i;
         closed = [];
         for(let r = 0; r < n; r++) {
+        probab = [];
+        allwish = 0;
         paths[i][r] = city;
         yeah = 0;
-        probab[city] = null;
+        probab[city] = 0;
         closed.push(city);
         disFinder(city);
+            for (let w = 0; w < closed.length; w++) {
+                probab[closed[w]] = 0;
+            }
+
         for(let j = 0; j < n; j++) {
             if (j != city && closed.includes(j) == false) {
-                allwish += antmatr[city][j].dist * antmatr[city][j].pher;
+                allwish += antmatrdist[city][j] * antmatrpher[city][j];
             }
         }
         for(let j = 0; j < n; j++) {
-            if (probab[j] != null) {
-                probab[j] = (antmatr[city][j].pher * antmatr[city][j].dist)/allwish;
+            if (probab[j] != 0 && closed.includes(j) == false) {
+                probab[j] = (antmatrpher[city][j] * antmatrdist[city][j])/allwish;
         } 
     }
         help = Math.random();
         for (let j = 0; j < n; j++) {
-            if (probab[j] != null) {
+            if (probab[j] != 0) {
                 yeah += probab[j];
-                if (yeah > help) {
+                if (yeah >= help) {
                     city = j;
                     break;
                 }
             }
         }
-    }
 }
+}
+
     for (let i = 0; i < n; i++) {
         for (let j = 0; j < n; j++) {
-            antmatr[i][j].pher *= 0.64; 
+            antmatrpher[i][j] *= 0.64; 
         }
     }
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < n; i++) {  
         for (let j = 0; j < n-1; j++) {
             createline(paths[i][j], paths[i][j+1]);
-            antmatr[paths[i][j]][paths[i][j+1]].pher += Q/antmatr[paths[i][j]][paths[i][j+1]].dist;
+            antmatrpher[paths[i][j]][paths[i][j+1]] += Q/antmatrdist[paths[i][j]][paths[i][j+1]];
         }
+    
+    }
+    setTimeout(function(e) {
+        clearcanv();
+    }, 2000)
+    
+    iter++;
     }
 }

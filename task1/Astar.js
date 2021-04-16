@@ -7,6 +7,7 @@ let closedindList = [];
 let n; 
 let INF = 9007199254740990;
 let b;
+let r;
 
 class Node { 
   constructor(num, parent, cost) {
@@ -19,6 +20,7 @@ class Node {
 //Оформление начинается тут
 
 function CreateField() {
+  cells = document.getElementsByClassName('block'); 
     b = true;
     n = parseInt(document.getElementById('vvod').value);
     if (n <= 0) {
@@ -90,7 +92,6 @@ function WallPoints() {
 }
 
 function WhatToDo() {
-  cells = document.getElementsByClassName('block'); 
   if (document.getElementById("radio1").checked) {
     StartPoint();
   } else if (document.getElementById("radio2").checked) {
@@ -150,10 +151,11 @@ function XY(ind) {
 }
 
 function ColorPath (win) {
-  while (win.parent != null) {
+  win = win.parent;
+  setTimeout(()=>{while (win.parent != null) {
     cells[win.num].style["background-color"] = "#fce4d4";
     win = win.parent;
-  }
+  }}, 300 * r)
 }
 
 function neighbors (poin) { //Ищем соседей и кидаем их в openList
@@ -162,9 +164,16 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   let help;
   let ind = poin.num;
 
+  if (ind != st) {
+    setTimeout(()=>{cells[poin.num].style["background-color"] = '#d3e9fe';}, 300 * r)
+  }
+
   if ((ind+1)%n != 0) { //правый сосед (да)
     if (closedindList.includes(ind+1) == false ) {
-        cells[ind+1].style["background-color"] = '#C2FFD6'; 
+      if (ind+1 != fin) {
+        setTimeout(()=>{cells[ind+1].style["background-color"] = '#C2FFD6'}, 300 * r)
+        r++;
+      }
       weight = XY(ind+1);
       help = findIndinOP(ind+1);
       if (help == false) {
@@ -180,7 +189,10 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   }
     if ((ind+1+n)%n != 0 && ind+n < n*n) { //нижний правый сосед (да)
       if (closedindList.includes(ind+1+n) == false) {
-          cells[ind+1+n].style["background-color"] = '#C2FFD6'; 
+        if (ind+1+n != fin) {
+          setTimeout(()=>{cells[ind+1+n].style["background-color"] = '#C2FFD6';   }, 300 * r)
+          r++; 
+        }
         weight = XY(ind+1+n);
         help = findIndinOP(ind+1+n);
         if (help == false) {
@@ -196,7 +208,9 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   }
   if ((ind+1-n)%n != 0 && ind-n+1 > 0) { //верхний правый сосед (да)
     if (closedindList.includes(ind+1-n) == false) {
-      cells[ind+1-n].style["background-color"] = '#C2FFD6'; 
+      if (ind+1-n != fin) {
+      setTimeout(()=>{cells[ind+1-n].style["background-color"] = '#C2FFD6'; }, 300 * r)
+      r++; }
       weight = XY(ind+1-n);
       help = findIndinOP(ind+1-n);
       if (help == false) {
@@ -212,7 +226,9 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   }
   if (ind-n >= 0) { //верхний сосед (да)
     if (closedindList.includes(ind-n) == false) {
-        cells[ind-n].style["background-color"] = '#C2FFD6'; 
+      if (ind-n != fin) {
+      setTimeout(()=>{ cells[ind-n].style["background-color"] = '#C2FFD6'; }, 300 * r)
+      r++; }
       weight = XY(ind-n); 
       help = findIndinOP(ind-n);
       if (help == false) {
@@ -228,7 +244,9 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   }
   if (ind+n < n*n) { //нижний сосед (да)
     if (closedindList.includes(ind+n) == false) {
-        cells[ind+n].style["background-color"] = '#C2FFD6'; 
+      if (ind+n != fin) {
+      setTimeout(()=>{cells[ind+n].style["background-color"] = '#C2FFD6'; }, 300 * r)
+      r++; }
       weight = XY(ind+n);
       help = findIndinOP(ind+n);
       if (help == false) {
@@ -244,7 +262,10 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   }
   if ((ind)%n != 0 && ind-1 >= 0) { //левый сосед (да)
     if (closedindList.includes(ind-1) == false) {
-        cells[ind-1].style["background-color"] = '#C2FFD6'; 
+      if (ind-1 != fin) {
+      setTimeout(()=>{cells[ind-1].style["background-color"] = '#C2FFD6'; }, 300 * r)
+      r++;
+      }
       weight = XY(ind-1);
       help = findIndinOP(ind-1);
       if (help == false) {
@@ -260,7 +281,9 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   }
   if ((ind)%n != 0 && ind-1-n >= 0) { //левый верхний сосед (да)
     if (closedindList.includes(ind-1-n) == false) {
-      cells[ind-1-n].style["background-color"] = '#C2FFD6'; 
+      if (ind-1-n != fin) {
+      setTimeout(()=>{cells[ind-1-n].style["background-color"] = '#C2FFD6';  }, 300 * r)
+      r++; }
       weight = XY(ind-1-n);
       help = findIndinOP(ind-1-n);
       if (help == false) {
@@ -276,7 +299,8 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   }
   if ((ind)%n != 0 && ind-1+n < n*n) { //левый нижний сосед (да)
     if (closedindList.includes(ind+n-1) == false) {
-        cells[ind-1+n].style["background-color"] = '#C2FFD6'; 
+      if (ind-1+n != fin) {
+      setTimeout(()=>{cells[ind-1+n].style["background-color"] = '#C2FFD6';  }, 300 * r) }
     weight = XY(ind+n-1);
     help = findIndinOP(ind-1+n);
     if (help == false) {
@@ -305,6 +329,8 @@ function finding () {
 }
 
 function adding() {
+  let currentnums = [];
+  r = 1;
   let created = false;
   let index = st;
   let current;
@@ -324,7 +350,10 @@ function adding() {
        ColorPath(current);
        created = true;
        break;
-     } 
+     }
+     currentnums.push(current.num);       
+     r++; 
+    // cells[current.num].style["background-color"] = '#a1dbff';
   } 
   if (created == false) {
     alert ("Ох, какая жалость! Пути нет!");
@@ -339,5 +368,116 @@ function StartPath() {
     fx = fin - (fy*n);
     adding ();
     cells[fin].style["background-color"] = '#6d67bf';
+  }
+}
+
+// лабиринт начинается тут
+
+function helper() {
+  let inx = 0;
+  while (inx < n) {
+    if (inx % 2 == 0) {
+      for (let hlp = 0; inx + (hlp*n) < n*n; hlp+=2){
+       if (closedindList.includes(inx + (hlp*n)) == true) {
+        return false;
+      }
+    }
+    }
+    inx+=2;
+}
+return true;
+}
+
+function getRandomFrom(directs) {
+  let index = Math.floor(Math.random() * directs.length);
+  return directs[index];
+}
+
+function maze() {
+  closedindList = [];
+  openList = [];
+  st = undefined;
+  fin = undefined;
+  let directions;
+  let direc;
+  let ind = 0;
+  let what;
+  cells[0].style["background-color"] = '#F6FFFE'; 
+  
+  for (let i = 1; i < cells.length; i++) {
+    cells[i].style["background-color"] = '#2E3236'; 
+    closedindList.push(i);
+  }
+  what = helper();
+
+  while (what == false) {
+
+    directions = [];
+    if (n%2 == 0){//вправо
+      if ((ind+2)%n != 0 && ind+2 < n*n) { 
+        directions.push("right");
+      }
+    } else {
+      if ((ind+2)%n != 1 && ind+2 < n*n) { 
+        directions.push("right");
+        }
+    }
+    
+  if (ind - (2*n) >= 0) { //вверх
+    directions.push("up");
+  }
+  if (ind + (2*n) < n*n) { //низ
+    directions.push("down");
+  }
+  if ((ind-1)%n != 0 && ind%n != 0 && ind-2 >= 0) { //влево
+    directions.push("left");
+  }
+
+  direc = getRandomFrom(directions);
+  
+  switch(direc) {
+    case 'left':
+      if (closedindList.includes(ind-2) == true) {
+        closedindList.splice(closedindList.indexOf(ind-1), 1);
+        cells[ind-1].style["background-color"] = '#F6FFFE'; 
+        closedindList.splice(closedindList.indexOf(ind-2), 1);
+        cells[ind-2].style["background-color"] = '#F6FFFE'; 
+      } 
+      ind = ind - 2;
+    break;
+
+    case 'right':
+      if (closedindList.includes(ind+2) == true) {
+        closedindList.splice(closedindList.indexOf(ind+1), 1);
+        cells[ind+1].style["background-color"] = '#F6FFFE'; 
+        closedindList.splice(closedindList.indexOf(ind+2), 1);
+        cells[ind+2].style["background-color"] = '#F6FFFE'; 
+      }
+      ind = ind + 2;
+    break;
+
+    case 'up':
+      if (closedindList.includes(ind - (2*n)) == true) {
+        closedindList.splice(closedindList.indexOf(ind - n), 1);
+        cells[ind - n].style["background-color"] = '#F6FFFE'; 
+        closedindList.splice(closedindList.indexOf(ind - (2*n)), 1);
+        cells[ind - (2*n)].style["background-color"] = '#F6FFFE'; 
+      }
+      ind = ind - 2*n;
+    break;
+
+    case 'down':
+      if (closedindList.includes(ind + (2*n)) == true) {
+        closedindList.splice(closedindList.indexOf(ind + n), 1);
+        cells[ind + n].style["background-color"] = '#F6FFFE'; 
+        closedindList.splice(closedindList.indexOf(ind + (2*n)), 1);
+        cells[ind + (2*n)].style["background-color"] = '#F6FFFE'; 
+      }
+      ind = ind + 2*n;
+    break;
+  }
+  what = helper();
+  console.log(what);
+  console.log(direc);
   }
 }

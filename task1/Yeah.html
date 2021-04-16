@@ -9,15 +9,22 @@
 <body>
     <script src="Astar.js"></script>
 
-    <h1>First task</h1>
+    <div class="preview">
+        <span> Алгоритм А* </span>
+    </div>
+
     <p>Размер поля: <input id="vvod" size=1 placeholder="0" onchange='removeField(true)'></p>
     <div>
         <label for="radio1">Начало</label><input name="radio-in" type="radio" id="radio1" checked />
         <label for="radio2">Конец</label><input name="radio-in" type="radio" id="radio2" />
         <label for="radio3">Препятствие</label><input name="radio-in" type="radio" id="radio3" />
+    </div>    
+    <div class="buttons">
+        <span class="btn" onclick="StartPath()"> Старт </span>
+        <span class="btn" onclick="maze()"> Генерация лабиринта </span>
+        <span class="btn" onclick="clearField()"> Очистить поле </span>
     </div>
-    <p><input type="button" id="clear" value=" Очистить поле " onclick="clearField()">
-    <input type="button" id="nachalo" value=" Старт " onclick="StartPath()"></p>
+
     <div class="field" id="FMap" onmousemove="WhatToDo()"></div>
     
 </body>

@@ -165,7 +165,7 @@ function neighbors (poin) { //Ищем соседей и кидаем их в op
   let ind = poin.num;
 
   if (ind != st) {
-    setTimeout(()=>{cells[poin.num].style["background-color"] = '#d3e9fe';}, 300 * r)
+    setTimeout(()=>{cells[poin.num].style["background-color"] = '#befa93';}, 300 * r)
   }
 
   if ((ind+1)%n != 0) { //правый сосед (да)
@@ -353,7 +353,6 @@ function adding() {
      }
      currentnums.push(current.num);       
      r++; 
-    // cells[current.num].style["background-color"] = '#a1dbff';
   } 
   if (created == false) {
     alert ("Ох, какая жалость! Пути нет!");

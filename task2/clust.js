@@ -143,8 +143,8 @@ window.addEventListener("DOMContentLoaded", function()
                 coordY = coordY + point.y;
             });
     
-            coordX =  Math.round(coordX / cluster.points.length);
-            coordY =  Math.round(coordY / cluster.points.length);
+            coordX =  Math.floor(coordX / cluster.points.length);
+            coordY =  Math.floor(coordY / cluster.points.length);
                 
             cluster.x = coordX;
             cluster.y = coordY;            

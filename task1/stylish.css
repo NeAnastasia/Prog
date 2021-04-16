@@ -4,8 +4,35 @@
 }
 
 .block {
-  width: 20px;
-  height: 20px;
-  background-color: ivory;
+  width: 25px;
+  height: 25px;
+  background-color: rgb(246, 255, 254);
   border: 1px solid black;
+}
+
+.preview{
+  display: flex;
+  justify-content: center;
+}
+
+.preview span{
+  font-size: 27px;
+}
+
+.buttons, .info{
+  display: flex;
+}
+
+.btn{
+  padding: 8px;
+  border-radius: 13px;
+  user-select: none;
+  border: 1px solid black;
+  margin: 15px 2px;
+}
+
+.btn:hover{
+  color:white;
+  background-color: #c9e2b5;
+  border: 1px solid white;
 }

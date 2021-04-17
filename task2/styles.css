@@ -1,26 +1,37 @@
-.preview{
-    display: flex;
-    justify-content: center;
-}
-  
-.preview span{
-    font-size: 27px;
+.point {
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    border-radius: 50%;
+    left: 0px;
+    top: 0px;
 }
 
-.btn{
-    padding: 10px;
+.cluster {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: black;
+    opacity: 0.7;
+    border-radius: 50%;
+    left: 0px;
+    top: 0px;
+}
+
+.buttons, .info{
+    display: flex;
+  }
+  
+  .btn{
+    padding: 8px;
     border-radius: 13px;
     user-select: none;
-    margin: 0 20px;
     border: 1px solid black;
-    margin-left: 325px;
-    margin-right: auto;
-    
-}
-
-.btn:hover{
+    margin: 10px 2px;
+  }
+  
+  .btn:hover{
     color:white;
-    background-color: rgb(165, 95, 179);;
-}
-
-
+    background-color: #e89e4a;
+    border: 1px solid white;
+  }

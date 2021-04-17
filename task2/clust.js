@@ -1,3 +1,5 @@
+let r;
+
 window.addEventListener("DOMContentLoaded", function() 
 {
     let allPoints = []; // объекты. координаты (x, y), кластер (cluster)
@@ -130,7 +132,8 @@ window.addEventListener("DOMContentLoaded", function()
             let minDist = minDistPointCluster(point);
             let indexClust = distance.indexOf(minDist);
             
-            redrawPoint(point, allClusters[indexClust].color);
+            setTimeout(()=>{redrawPoint(point, allClusters[indexClust].color);}, 400 * r)
+            r++;
             allClusters[indexClust].points.push(point);
             point.color = allClusters[indexClust].color;
         });        
@@ -188,66 +191,59 @@ window.addEventListener("DOMContentLoaded", function()
         });
     })
 
-    // function animate() {
-    //     context.clearRect(0, 0, canvas.width, canvas.height);
+     function animate() {
 
-    //     allPoints.forEach(point => {
-    //         redrawPoint(point, point.color);
-    //     });
+         setTimeout(()=>{ pointsToCluster();}, 400 * r)
+         
+         allClusters.forEach(cluster => {
+            setTimeout(()=>{drawCluster(cluster); }, 400 * r)
+            r++; 
+         });
+        
+         allClusters.forEach(cluster => {
+             let oldX =  Math.floor(cluster.x);
+             let oldY = Math.floor(cluster.y);
+             newClusterPlace(cluster);
+             if (oldX != Math.floor(cluster.x) && oldY != Math.floor(cluster.y)) {
+                 flag = false;
+             }
+         });
 
-    //     allClusters.forEach(cluster => {
-    //         drawCluster(cluster);
-    //     });
-
-    //     pointsToCluster();
-    //     flag = true;
-    //     allClusters.forEach(cluster => {
-    //         let oldX =  Math.floor(cluster.x);
-    //         let oldY = Math.floor(cluster.y);
-    //         newClusterPlace(cluster);
-    //         if (oldX != Math.floor(cluster.x) && oldY != Math.floor(cluster.y)) {
-    //             flag = false;
-    //         }
-    //     });
-
-    //     if (flag) {
-    //         clearInterval();
-    //     }
-    // }
+     }
 
     document.getElementById("start").addEventListener("click", function(e) {
+        r = 0;
         if ((pointCount == 0) || (pointCount == allPoints.length)) {
             kMeasnPlusPlus();
         }
         
-        let flag = false;
-        while (!flag) {
-            flag = true;
-            pointsToCluster();
-            allClusters.forEach(cluster => {
-                let oldX =  Math.floor(cluster.x);
-                let oldY = Math.floor(cluster.y);
-                newClusterPlace(cluster);
-                if (oldX != Math.floor(cluster.x) && oldY != Math.floor(cluster.y)) {
-                    flag = false;
-                }
-            });
-        }
+        // while (!flag) {
+        //     flag = true;
+        //     pointsToCluster();
+        //     allClusters.forEach(cluster => {
+        //         let oldX =  Math.floor(cluster.x);
+        //         let oldY = Math.floor(cluster.y);
+        //         newClusterPlace(cluster);
+        //         if (oldX != Math.floor(cluster.x) && oldY != Math.floor(cluster.y)) {
+        //             flag = false;
+        //         }
+        //     });
+        // }
 
-        if (pointCount != allPoints.length) {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            allPoints.forEach(point => {
-                redrawPoint(point, point.color);
-            });            
-        }
+        // if (pointCount != allPoints.length) {
+        //     context.clearRect(0, 0, canvas.width, canvas.height);
+        //     allPoints.forEach(point => {
+        //         redrawPoint(point, point.color);
+        //     });            
+        // }
 
-        allClusters.forEach(cluster => {
-            drawCluster(cluster);
-        });
+        // allClusters.forEach(cluster => {
+        //     drawCluster(cluster);
+        // });
 
         pointCount = allPoints.length;
 
-        // setInterval(animate(), 100);
+        animate();
     })
 
     document.getElementById("clear").addEventListener("click", function(e) {
@@ -257,4 +253,3 @@ window.addEventListener("DOMContentLoaded", function()
         pointCount = 0;
     })
 })
-

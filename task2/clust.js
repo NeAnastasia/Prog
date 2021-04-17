@@ -132,8 +132,8 @@ window.addEventListener("DOMContentLoaded", function()
             let minDist = minDistPointCluster(point);
             let indexClust = distance.indexOf(minDist);
             
-            setTimeout(()=>{redrawPoint(point, allClusters[indexClust].color);}, 400 * r)
-            r++;
+            // setTimeout(()=>{redrawPoint(point, allClusters[indexClust].color);}, 400 * r)
+            // r++;
             allClusters[indexClust].points.push(point);
             point.color = allClusters[indexClust].color;
         });        
@@ -191,59 +191,99 @@ window.addEventListener("DOMContentLoaded", function()
         });
     })
 
-     function animate() {
+    // function animate() {
 
-         setTimeout(()=>{ pointsToCluster();}, 400 * r)
-         
-         allClusters.forEach(cluster => {
-            setTimeout(()=>{drawCluster(cluster); }, 400 * r)
-            r++; 
-         });
         
-         allClusters.forEach(cluster => {
-             let oldX =  Math.floor(cluster.x);
-             let oldY = Math.floor(cluster.y);
-             newClusterPlace(cluster);
-             if (oldX != Math.floor(cluster.x) && oldY != Math.floor(cluster.y)) {
-                 flag = false;
-             }
-         });
+        
+    // //     // allClusters.forEach(cluster => {
+    // //     //    setTimeout(()=>{drawCluster(cluster); }, 400 * r)
+    // //     //    r++; 
+    // //     // });
+       
+    // //     let flag = false;
+        
+    // //     while (!flag) {
+    // //         flag = true;
+    // //         pointsToCluster();
+    // //         allClusters.forEach(cluster => {
+    // //             let oldX =  Math.floor(cluster.x);
+    // //             let oldY = Math.floor(cluster.y);
+    // //             newClusterPlace(cluster);
+    // //             if (oldX != Math.floor(cluster.x) && oldY != Math.floor(cluster.y)) {
+    // //                 flag = false;
+    // //             }
+    // //         });
 
-     }
+    // //         allClusters.forEach(cluster => {
+    // //             drawCluster(cluster);
+    // //         });
+
+    // //         setTimeout(()=>{ animate();}, 40 * r);
+    // //     }
+
+    // let flag = false;
+        
+    // while (!flag) {
+    //     flag = true;
+    //     pointsToCluster();
+    //     allClusters.forEach(cluster => {
+    //         let oldX =  Math.floor(cluster.x);
+    //         let oldY = Math.floor(cluster.y);
+    //         newClusterPlace(cluster);
+    //         if (oldX != Math.floor(cluster.x) && oldY != Math.floor(cluster.y)) {
+    //             flag = false;
+    //         }
+    //     });
+
+    //     context.clearRect(0, 0, canvas.width, canvas.height);
+    //     allPoints.forEach(point => {
+    //         redrawPoint(point, point.color);
+    //     });  
+
+    //     allClusters.forEach(cluster => {
+    //         drawCluster(cluster);
+    //     });
+    //     setTimeout(()=>{ animate();}, 400 * r);
+    // }
+
+        
+
+    // }    
 
     document.getElementById("start").addEventListener("click", function(e) {
-        r = 0;
         if ((pointCount == 0) || (pointCount == allPoints.length)) {
             kMeasnPlusPlus();
-        }
+        }    
+
+        let flag = false;
         
-        // while (!flag) {
-        //     flag = true;
-        //     pointsToCluster();
-        //     allClusters.forEach(cluster => {
-        //         let oldX =  Math.floor(cluster.x);
-        //         let oldY = Math.floor(cluster.y);
-        //         newClusterPlace(cluster);
-        //         if (oldX != Math.floor(cluster.x) && oldY != Math.floor(cluster.y)) {
-        //             flag = false;
-        //         }
-        //     });
-        // }
+        while (!flag) {
+            flag = true;
+            pointsToCluster();
+            allClusters.forEach(cluster => {
+                let oldX =  Math.floor(cluster.x);
+                let oldY = Math.floor(cluster.y);
+                newClusterPlace(cluster);
+                if (oldX != Math.floor(cluster.x) && oldY != Math.floor(cluster.y)) {
+                    flag = false;
+                }
+            });
+        }
 
-        // if (pointCount != allPoints.length) {
-        //     context.clearRect(0, 0, canvas.width, canvas.height);
-        //     allPoints.forEach(point => {
-        //         redrawPoint(point, point.color);
-        //     });            
-        // }
+        if (pointCount != allPoints.length) {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            allPoints.forEach(point => {
+                redrawPoint(point, point.color);
+            });            
+        }
 
-        // allClusters.forEach(cluster => {
-        //     drawCluster(cluster);
-        // });
+        allClusters.forEach(cluster => {
+            drawCluster(cluster);
+        });
 
         pointCount = allPoints.length;
 
-        animate();
+        
     })
 
     document.getElementById("clear").addEventListener("click", function(e) {

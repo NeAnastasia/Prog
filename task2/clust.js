@@ -9,15 +9,17 @@ window.addEventListener("DOMContentLoaded", function()
     const canvas = document.querySelector("canvas");
     const context = canvas.getContext("2d");
 
-    canvas.width = 300;
-    canvas.height = 300;
+    canvas.width = 1255;
+    canvas.height = 350;
 
     function randColor() {
-        var r = Math.floor(Math.random() * (256)),
-            g = Math.floor(Math.random() * (256)),
-            b = Math.floor(Math.random() * (256));
-        return '#' + r.toString(16) + g.toString(16) + b.toString(16);
-    }
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
 
     function clustersCount() { // количество кластеров
         if (document.getElementById('vvod').value) {
@@ -147,7 +149,9 @@ window.addEventListener("DOMContentLoaded", function()
             coordY =  Math.floor(coordY / cluster.points.length);
                 
             cluster.x = coordX;
-            cluster.y = coordY;            
+            cluster.y = coordY;      
+            
+            cluster.points = [];
         }
             
     }

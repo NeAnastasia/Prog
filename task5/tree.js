@@ -1,12 +1,15 @@
 window.addEventListener("DOMContentLoaded", function() {
     let data;
-    let tree;
+    let example;
+    let tree = [];
     let classIndex, classCount, classes;
 
     class tree_element {
-        constructor(value, parent) {
+        constructor(value) {
             this.value = value;
-            this.parent = parent;
+            this.branches = {};
+            this.leaf = 0; // 0 - узел, 1 - лист
+            this.cl;
         }
     }
 
@@ -18,13 +21,19 @@ window.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    function getExample() {
+        example = document.getElementById('vvod2').value;
+        example = example.split(";");
+    }
+
     function infoAtribute(index) {
         let atr = [];
         data.forEach(exp => {
             atr.push(exp[index])
         });
 
-        let unique = atr.filter((v, i, s) => s.indexOf(v) === s.lastIndexOf(v));
+        // let unique = atr.filter((v, i, s) => s.indexOf(v) === s.lastIndexOf(v));
+        let unique = Array.from(new Set(atr));
         return unique;
     }
 
@@ -62,7 +71,7 @@ window.addEventListener("DOMContentLoaded", function() {
             let less = [];
             let more = [];
             exp.forEach(pr => {
-                if (pr[a] < THi) {
+                if (parseFloat(pr[a]) < THi) {
                     less.push(pr);
                 }
                 else {
@@ -78,7 +87,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
         let max = gain[0];
         gain.forEach(el => {
-            if (el[0] > max[0]) max = el;
+            if (parseFloat(el[0]) > parseFloat(max[0])) max = el;
         });
 
         return max; // значение инфы, пороговое значение
@@ -97,7 +106,7 @@ window.addEventListener("DOMContentLoaded", function() {
             }
             else {
                 atr.forEach(vid => {
-                    let Ti;
+                    let Ti = [];
                     exp.forEach(pr => {
                         if (pr[a] === vid) Ti.push(pr);
                     });
@@ -111,7 +120,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
         let choice = 0;
         for (let atr = 0; atr < gain.length; atr++) {
-            if (gain[atr][0] > gain[choice][0]) {
+            if (parseFloat(gain[atr][0]) > parseFloat(gain[choice][0])) {
                 choice = atr;
             }
         }
@@ -125,6 +134,7 @@ window.addEventListener("DOMContentLoaded", function() {
     
     function branching(a) {
         let node = chooseAtribute(a);
+        let knot = new tree_element(node[0]);
         if (node.length == 1) {
             let atribute = infoAtribute(node[0])
 
@@ -132,41 +142,71 @@ window.addEventListener("DOMContentLoaded", function() {
                 let x = [];
                 let cl = [];
                 a.forEach(el => {
-                    if (el[node[0]] === vid) {
+                    if (el[node[0]] == vid) {
                         x.push(el);
                         cl.push(el[classIndex]);
                     }
                 });
 
-                let unique = cl.filter((v, i, s) => s.indexOf(v) === s.lastIndexOf(v));
+                let unique = Array.from(new Set(cl));
+
                 if (unique.length != 1) {
-                    branching(x);
-                }
-            });
-        }
-        else {
-            let x = [], y = [];
-            let clx = [], cly = [];
-            a.forEach(el => {
-                if (el[node[0]] < node[1]) {
-                    x.push(el);
-                    clx.push(el[classIndex]);
+                    knot.branches[vid] = branching(x);
                 }
                 else {
-                    y.push(el);
-                    cly.push(el[classIndex])
+                    let leaf = new tree_element();
+                    leaf.leaf = 1;
+                    leaf.cl = unique[0];
+                    knot.branches[vid] = leaf;
                 }
             });
-
-            let unique = clx.filter((v, i, s) => s.indexOf(v) === s.lastIndexOf(v));
-            if (unique.length != 1) {
-                branching(x);
-            }
-            let unique = clx.filter((v, i, s) => s.indexOf(v) === s.lastIndexOf(v));
-            if (unique.length != 1) {
-                branching(y);
-            }
         }
+        // else {
+        //     let x = [], y = [];
+        //     let clx = [], cly = [];
+        //     a.forEach(el => {
+        //         if (el[node[0]] < node[1]) {
+        //             x.push(el);
+        //             clx.push(el[classIndex]);
+        //         }
+        //         else {
+        //             y.push(el);
+        //             cly.push(el[classIndex])
+        //         }
+        //     });
+
+        //     let unique = clx.filter((v, i, s) => s.indexOf(v) === s.lastIndexOf(v));
+        //     if (unique.length != 1) {
+        //         branching(x);
+        //     }
+        //     let unique = clx.filter((v, i, s) => s.indexOf(v) === s.lastIndexOf(v));
+        //     if (unique.length != 1) {
+        //         branching(y);
+        //     }
+        // }
+
+        tree.push(knot);
+        return knot;
     }
+
+    function search() {
+        let pr = tree[tree.length - 1];
+
+        while (pr.leaf != 1) {
+            let next = example[pr.value];
+            pr = pr.branches[next];
+        }
+        
+        return pr.cl;
+    }
+
+    document.getElementById("start").addEventListener("click", function(e) {
+        getData();
+        aboutClass();
+        branching(data);
+
+        getExample();
+        console.log(search(example));
+    })
 
 })

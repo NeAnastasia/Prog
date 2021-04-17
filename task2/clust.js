@@ -1,4 +1,3 @@
-let r;
 
 window.addEventListener("DOMContentLoaded", function() 
 {
@@ -6,7 +5,6 @@ window.addEventListener("DOMContentLoaded", function()
     let allClusters = []; // объекты. координаты (x, y), id, цвет (color), массив точек (points)
     let clusterCount;
     let pointCount = 0;
-    // let usePointsForCoord = [];
 
     const canvas = document.querySelector("canvas");
     const context = canvas.getContext("2d");
@@ -99,23 +97,6 @@ window.addEventListener("DOMContentLoaded", function()
 
     }
 
-    // function createClusters() {
-    //     clustersCount();
-    //     for (let count = 0; count < clusterCount; count++) {
-    //         let x = Math.random() * (canvas.width - 5) + 5;
-    //         let y = Math.random() * (canvas.width - 5) + 5;
-    //         let color = randColor();
-
-    //         allClusters.push({
-    //             x: x,
-    //             y: y,
-    //             color: color,
-    //             points: []
-    //         })
-    //     }
-
-    // }
-
     function redrawPoint(point, color) {
         context.beginPath();
         context.globalAlpha = 1;
@@ -131,9 +112,6 @@ window.addEventListener("DOMContentLoaded", function()
             let distance = distPointClusters(point);
             let minDist = minDistPointCluster(point);
             let indexClust = distance.indexOf(minDist);
-            
-            // setTimeout(()=>{redrawPoint(point, allClusters[indexClust].color);}, 400 * r)
-            // r++;
             allClusters[indexClust].points.push(point);
             point.color = allClusters[indexClust].color;
         });        
@@ -190,65 +168,6 @@ window.addEventListener("DOMContentLoaded", function()
             color: "black"
         });
     })
-
-    // function animate() {
-
-        
-        
-    // //     // allClusters.forEach(cluster => {
-    // //     //    setTimeout(()=>{drawCluster(cluster); }, 400 * r)
-    // //     //    r++; 
-    // //     // });
-       
-    // //     let flag = false;
-        
-    // //     while (!flag) {
-    // //         flag = true;
-    // //         pointsToCluster();
-    // //         allClusters.forEach(cluster => {
-    // //             let oldX =  Math.floor(cluster.x);
-    // //             let oldY = Math.floor(cluster.y);
-    // //             newClusterPlace(cluster);
-    // //             if (oldX != Math.floor(cluster.x) && oldY != Math.floor(cluster.y)) {
-    // //                 flag = false;
-    // //             }
-    // //         });
-
-    // //         allClusters.forEach(cluster => {
-    // //             drawCluster(cluster);
-    // //         });
-
-    // //         setTimeout(()=>{ animate();}, 40 * r);
-    // //     }
-
-    // let flag = false;
-        
-    // while (!flag) {
-    //     flag = true;
-    //     pointsToCluster();
-    //     allClusters.forEach(cluster => {
-    //         let oldX =  Math.floor(cluster.x);
-    //         let oldY = Math.floor(cluster.y);
-    //         newClusterPlace(cluster);
-    //         if (oldX != Math.floor(cluster.x) && oldY != Math.floor(cluster.y)) {
-    //             flag = false;
-    //         }
-    //     });
-
-    //     context.clearRect(0, 0, canvas.width, canvas.height);
-    //     allPoints.forEach(point => {
-    //         redrawPoint(point, point.color);
-    //     });  
-
-    //     allClusters.forEach(cluster => {
-    //         drawCluster(cluster);
-    //     });
-    //     setTimeout(()=>{ animate();}, 400 * r);
-    // }
-
-        
-
-    // }    
 
     document.getElementById("start").addEventListener("click", function(e) {
         if ((pointCount == 0) || (pointCount == allPoints.length)) {

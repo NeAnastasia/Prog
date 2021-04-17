@@ -1,0 +1,29 @@
+.btn{
+    padding: 10px;
+    border-radius: 13px;
+    user-select: none;
+    margin: 0 20px;
+    border: 1px solid black;
+    margin-left: 500px;
+    margin-right: 500px;
+    
+}
+
+.btn:hover{
+    color:white;
+    background-color: rgb(165, 95, 179);;
+}
+
+.btn, .info{
+    display: flex;
+    justify-content: center;
+}
+
+.preview{
+    display: flex;
+    justify-content: center;
+}
+  
+.preview span{
+    font-size: 27px;
+}
